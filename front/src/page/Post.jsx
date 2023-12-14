@@ -14,7 +14,7 @@ export default function Post() {
   useEffect(()=>{
     async function getPosts() {
       const result = await Api.get("/")
-      setPosts(result)
+      setPosts(result.data)
     }
     getPosts()
   },[])
@@ -50,7 +50,19 @@ export default function Post() {
           <input value={caption} onChange={e => setCaption(e.target.value)} type="text" placeholder='Caption'></input>
           <button type="submit">Submit</button>
         </form>
+       
+        {
+          Posts.map((item,index)=>{
 
+            return(
+              <div key={item._id}>
+               <img src={item.imageUrl} style={{
+                "width":"80px"
+              }}/>
+               </div>
+            )
+          })
+        }
     </div>
   )
 }

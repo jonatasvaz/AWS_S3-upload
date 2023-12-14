@@ -3,8 +3,9 @@ const mongoose = require('mongoose')
 
 const Auth= new mongoose.Schema({
      imageName:String,
-     caption:String
-    
+     caption:String,
+     imageUrl:String
+      
      
 })
 
