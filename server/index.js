@@ -5,7 +5,7 @@ const sharp = require("sharp")
 const crypto = require("crypto")
 const Auth= require("./model/index.js")
 const cors = require("cors")
-
+require('dotenv').config()
 const app = express()
 app.set('view engine', 'ejs')
 app.use(express.static("public"))
@@ -21,7 +21,7 @@ app.set('view engine', 'ejs')
 app.use(express.static("public"))
 
 
-
+//este endpoint faz o upload do arquivo
 
 app.post("/post",upload.single("image"),async (req,res)=>{
     const file = req.file
@@ -35,7 +35,7 @@ app.post("/post",upload.single("image"),async (req,res)=>{
 
  const upload=  await uploadFile(fileBuffer, imageName, file.mimetype)
  if(upload){ 
-    const validação= await Auth.create({
+     await Auth.create({
         imageName,
         caption
         
@@ -51,14 +51,19 @@ app.post("/post",upload.single("image"),async (req,res)=>{
 app.get("/", async (req, res) => {
   const posts = await Auth.find()
   for (let post of posts) {
+
   post.imageUrl= await getObjectSignedUrl(post.imageName)
-  console.log(post)
+  //acima poderia ser  =       post.imageurl =stringcloudfront/post.imageName
+ 
   }
+  
 res.send(posts)
 
   })
 
-mongoose.connect('mongodb+srv://santosjonaras:jonatas@cluster0.1rr4af5.mongodb.net/?retryWrites=true&w=majority' , )
+const connectstring= process.env.CONECTION_MONGODB
+
+mongoose.connect(connectstring , )
 .then(()=> console.log('conected at database'))
 .catch((err)=> console.log(err  +  "  erro in conect at database"))
 
